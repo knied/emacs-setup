@@ -9,6 +9,7 @@
 
 (package-install 'gruvbox-theme)
 (package-install 'p4)
+(package-install 'magit)
 #+END_SRC
 
 * Startup
@@ -38,6 +39,8 @@ This makes Emacs start with only the *scratch* buffer visible
 (define-key global-map [C-end] 'end-of-buffer)
 (define-key global-map [home] 'beginning-of-line)
 (define-key global-map [end] 'end-of-line)
+
+(global-set-key (kbd "C-x g") 'magit-status)
 #+END_SRC
 
 * Visual Appearence
@@ -116,7 +119,7 @@ Override selected text when starting to type
 (delete-selection-mode 1)
 #+END_SRC
 
-* Perforce
+* Perforce Integration
 Perforce integration for Emacs
 
 #+BEGIN_SRC emacs-lisp
@@ -141,6 +144,11 @@ Perforce integration for Emacs
 | submit     | C-x p S      | Submit changes to the depot                              |
 | update     | C-x p g      | Get files from depot                                     |
 |------------+--------------+----------------------------------------------------------|
+
+* Git Integration
+#+BEGIN_SRC emacs-lisp
+(require 'magit)
+#+END_SRC
 
 * Org Mode
 #+BEGIN_SRC emacs-lisp
