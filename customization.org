@@ -8,6 +8,7 @@
 (package-initialize)
 
 (package-install 'gruvbox-theme)
+(package-install 'p4)
 #+END_SRC
 
 * Startup
@@ -72,7 +73,13 @@ Turn off bell sound
 
 ** Font
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'default nil :height 140 :font "Menlo")
+(cond
+  ((string-equal system-type "darwin")
+   (progn
+     (set-face-attribute 'default nil :height 140 :font "Menlo")))
+  ((string-equal system-type "gnu/linux")
+   (progn
+     (set-face-attribute 'default nil :height 120 :font "DejaVu Sans Mono"))))
 #+END_SRC
 
 ** Theme
@@ -108,6 +115,32 @@ Override selected text when starting to type
 #+BEGIN_SRC emacs-lisp
 (delete-selection-mode 1)
 #+END_SRC
+
+* Perforce
+Perforce integration for Emacs
+
+#+BEGIN_SRC emacs-lisp
+(require 'p4)
+#+END_SRC
+
+|------------+--------------+----------------------------------------------------------|
+| p4 Command | Key Sequence | Description                                              |
+|------------+--------------+----------------------------------------------------------|
+| add        | C-x p a      | Open file for add                                        |
+| annotate   | C-x p V      | Annotate each line with the revision it was last updated |
+| client     | C-x p c      | Edit client workspace mapping                            |
+| edit       | C-x p e      | Open file for edit                                       |
+| delete     | C-x p x      | Open file for delete                                     |
+| diff       | C-x p =      | Diff local file against depot                            |
+| filelog    | C-x p f      | Show revision history of file                            |
+| move       | C-x p m      | Move (rename) a file that's open for edit                |
+| opened     | C-x p o      | List open files                                          |
+| reconcile  | C-x p z      | Reconcile client with workspace changes                  |
+| revert     | C-x p r      | Revert file, discarding local changes                    |
+| status     | C-x p s      | Identify differences between the workspace and the depot |
+| submit     | C-x p S      | Submit changes to the depot                              |
+| update     | C-x p g      | Get files from depot                                     |
+|------------+--------------+----------------------------------------------------------|
 
 * Org Mode
 #+BEGIN_SRC emacs-lisp
