@@ -1,0 +1,121 @@
+* Package Manager
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("melpa-stable" . "http://melpa.org/packages/"))
+(when (< emacs-major-version 24)
+  ;; For important compatibility libraries like cl-lib
+  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+(package-initialize)
+
+(package-install 'gruvbox-theme)
+#+END_SRC
+
+* Startup
+** Server
+#+BEGIN_SRC emacs-lisp
+(server-start)
+#+END_SRC
+
+** Initial Buffer
+This makes Emacs start with only the *scratch* buffer visible
+
+#+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-message t)
+#+END_SRC
+
+* Key Bindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "<f7>") 'compile)
+(global-set-key (kbd "C-=") 'dired-create-directory)
+
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+
+(define-key global-map [C-home] 'beginning-of-buffer)
+(define-key global-map [C-end] 'end-of-buffer)
+(define-key global-map [home] 'beginning-of-line)
+(define-key global-map [end] 'end-of-line)
+#+END_SRC
+
+* Visual Appearence
+** GUI
+*** Tool Bar
+Rmove clutter by disabling the tool bar and scroll bars
+
+#+BEGIN_SRC emacs-lisp
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+#+END_SRC
+
+*** Mouse Scrolling
+Fine tune the scrolling behavior when using the mouse
+
+#+BEGIN_SRC emacs-lisp
+(setq scroll-margin 1
+      scroll-conservatively 0
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01)
+(setq-default scroll-up-aggressively 0.01
+	      scroll-down-aggressively 0.01)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
+;(setq mouse-wheel-progressive-speed nil)
+#+END_SRC
+
+*** Sounds
+Turn off bell sound
+
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+#+END_SRC
+
+** Font
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'default nil :height 140 :font "Menlo")
+#+END_SRC
+
+** Theme
+#+BEGIN_SRC emacs-lisp
+(load-theme 'gruvbox t)
+#+END_SRC
+
+** Custom Curser
+#+BEGIN_SRC emacs-lisp
+(set-cursor-color "#b8eb26")
+#+END_SRC
+
+* Buffer Handling
+** Ido Mode
+Nicer buffer switching. This allows to cycle through open buffers in the echo line:
+
+#+BEGIN_SRC emacs-lisp
+(require 'ido)
+(ido-mode 'buffers) ;; only use this line to turn off ido for file names!
+(setq ido-ignore-buffers '("^ " "*Completions*" "*Shell Command Output*"
+			   "*Messages*" "Async Shell Command"))
+#+END_SRC
+
+* Source Code
+** Tab Behavior
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil)
+#+END_SRC
+
+** Misc
+Override selected text when starting to type
+
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode 1)
+#+END_SRC
+
+* Org Mode
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-indented t)
+(setq org-src-fontify-natively t)
+#+END_SRC
+
+* Dired Mode
+#+BEGIN_SRC emacs-lisp
+(put 'dired-find-alternate-file 'disabled nil)
+#+END_SRC
