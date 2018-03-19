@@ -82,7 +82,7 @@ Turn off bell sound
      (set-face-attribute 'default nil :height 140 :font "Menlo")))
   ((string-equal system-type "gnu/linux")
    (progn
-     (set-face-attribute 'default nil :height 120 :font "DejaVu Sans Mono"))))
+     (set-face-attribute 'default nil :height 110 :font "DejaVu Sans Mono"))))
 #+END_SRC
 
 ** Theme
