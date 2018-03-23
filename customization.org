@@ -107,6 +107,14 @@ Nicer buffer switching. This allows to cycle through open buffers in the echo li
 #+END_SRC
 
 * Source Code
+** File Modes
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("SConstruct" . python-mode))
+(add-to-list 'auto-mode-alist '("SConscript" . python-mode))
+(add-to-list 'auto-mode-alist '("moduledef" . python-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+#+END_SRC
+
 ** Tab Behavior
 #+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
@@ -155,6 +163,7 @@ Perforce integration for Emacs
 (setq org-startup-indented t)
 (setq org-src-fontify-natively t)
 (setq org-agenda-files '("~/agenda"))
+(setq org-log-done 'time)
 #+END_SRC
 
 * Dired Mode
