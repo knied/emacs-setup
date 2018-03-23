@@ -10,6 +10,7 @@
 (package-install 'gruvbox-theme)
 (package-install 'p4)
 (package-install 'magit)
+(package-install 'evil)
 #+END_SRC
 
 * Startup
