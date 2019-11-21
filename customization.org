@@ -11,6 +11,7 @@
 (package-install 'p4)
 (package-install 'magit)
 (package-install 'evil)
+(package-install 'swift-mode)
 #+END_SRC
 
 * Startup
@@ -170,6 +171,29 @@ Perforce integration for Emacs
 * Dired Mode
 #+BEGIN_SRC emacs-lisp
 (put 'dired-find-alternate-file 'disabled nil)
+#+END_SRC
+
+* Metal Mode
+#+BEGIN_SRC emacs-lisp
+(require 'cc-mode)
+
+;;;###autoload
+(define-derived-mode metal-mode c++-mode "Metal"
+  "Major mode provides syntax highlighting for Metal shader files."
+  (make-local-variable 'font-lock-defaults)
+  (setq metal-mode-font-lock-keywords (append c++-font-lock-keywords
+                                              c++-font-lock-keywords-1
+                                              c++-font-lock-keywords-2
+                                              c++-font-lock-keywords-3
+                                              '(("\\<\\(fragment\\|constant\\|kernel\\|vertex\\|device\\|Uniforms\\)\\>" . font-lock-keyword-face)
+                                                ("\\<\\(\\(packed_\\)?\\(bool\\|u?char\\|u?short\\|u?int\\|harf\\|float\\)[2-4]?\\|harf[2-4]x[2-4]\\|float[2-4]x[2-4]\\|atomic_u?int\\)\\>" . font-lock-type-face)
+                                                ("\\<\\(sampler\\|texture\\([1-3]d\\|cube\\)\\(_array\\|_ms\\)?\\|\\(depth\\(2d\\|cube\\)\\(_array\\|_ms\\)?\\)\\)\\>" . font-lock-type-face))))
+  (setq font-lock-defaults '(metal-mode-font-lock-keywords)))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.metal\\'" . metal-mode))
+
+(provide 'metal-mode)
 #+END_SRC
 
 * Backups

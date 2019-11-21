@@ -11,6 +11,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(magit-log-section-arguments (quote ("--graph" "--color" "--decorate" "-n256")))
  '(package-selected-packages (quote (evil magit p4 gruvbox-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
