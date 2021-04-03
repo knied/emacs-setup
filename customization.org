@@ -12,6 +12,7 @@
 (package-install 'magit)
 (package-install 'evil)
 (package-install 'swift-mode)
+(package-install 'typescript-mode)
 #+END_SRC
 
 * Startup
@@ -117,6 +118,44 @@ Nicer buffer switching. This allows to cycle through open buffers in the echo li
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+END_SRC
 
+** Verilog
+#+BEGIN_SRC emacs-lisp
+(custom-set-variables
+'(verilog-align-ifelse t)
+'(verilog-auto-delete-trailing-whitespace t)
+'(verilog-auto-inst-param-value t)
+'(verilog-auto-inst-vector nil)
+'(verilog-auto-lineup (quote all))
+'(verilog-auto-newline nil)
+'(verilog-auto-save-policy nil)
+'(verilog-auto-template-warn-unused t)
+'(verilog-case-indent 2)
+'(verilog-cexp-indent 2)
+'(verilog-highlight-grouping-keywords t)
+'(verilog-highlight-modules t)
+'(verilog-indent-level 2)
+'(verilog-indent-level-behavioral 2)
+'(verilog-indent-level-declaration 2)
+'(verilog-indent-level-module 2)
+'(verilog-indent-lists nil)
+'(verilog-tab-to-comment nil)
+)
+#+END_SRC
+** C++ Indentation
+#+BEGIN_SRC emacs-lisp
+(c-add-style "kristof"
+  '("stroustrup"
+    (c-basic-offset   . 2)
+    (c-offsets-alist  . ((inline-open         . 0)
+                         (block-open          . 0)
+                         (brace-list-open     . 0)
+                         (inextern-lang       . 0)
+                         (innamespace         . 0)
+                         (inlambda            . 0)
+                         (statement-case-open . +)))))
+(setq c-default-style "kristof")
+#+END_SRC
+
 ** Tab Behavior
 #+BEGIN_SRC emacs-lisp
 (setq-default indent-tabs-mode nil)
@@ -127,6 +166,12 @@ Override selected text when starting to type
 
 #+BEGIN_SRC emacs-lisp
 (delete-selection-mode 1)
+#+END_SRC
+
+Highlite matching paranthesis
+
+#+BEGIN_SRC emacs-lisp
+(show-paren-mode 1)
 #+END_SRC
 
 * Perforce Integration
