@@ -12,7 +12,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(magit-log-section-arguments '("--graph" "--color" "--decorate" "-n256"))
- '(package-selected-packages '(verilog-mode evil magit p4 gruvbox-theme))
+ '(package-selected-packages
+   '(rustic flycheck lsp-ui rust-mode typescript-mode swift-mode lsp-mode verilog-mode evil magit p4 gruvbox-theme))
  '(verilog-align-ifelse t)
  '(verilog-auto-delete-trailing-whitespace t)
  '(verilog-auto-inst-param-value t)

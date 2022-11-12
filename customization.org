@@ -1,18 +1,28 @@
 * Package Manager
 #+BEGIN_SRC emacs-lisp
-(require 'package)
-(add-to-list 'package-archives '("melpa-stable" . "http://melpa.org/packages/"))
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
-(package-initialize)
+  (require 'package)
+  (add-to-list 'package-archives '("melpa-stable" . "http://melpa.org/packages/"))
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+  ;; (package-initialize)
 
-(package-install 'gruvbox-theme)
-(package-install 'p4)
-(package-install 'magit)
-(package-install 'evil)
-(package-install 'swift-mode)
-(package-install 'typescript-mode)
+  (package-install 'gruvbox-theme)
+  (package-install 'p4)
+  (package-install 'magit)
+  (package-install 'evil)
+  (package-install 'swift-mode)
+  (package-install 'typescript-mode)
+
+  ;; Rust
+  (package-install 'rust-mode)
+  (package-install 'rustic)
+
+  ;; LSP
+  (package-install 'lsp-mode)
+  (package-install 'lsp-ui)
+  (package-install 'flycheck)
+
 #+END_SRC
 
 * Startup
@@ -239,6 +249,18 @@ Perforce integration for Emacs
 (add-to-list 'auto-mode-alist '("\\.metal\\'" . metal-mode))
 
 (provide 'metal-mode)
+#+END_SRC
+
+* Rust Mode
+#+BEGIN_SRC emacs-lisp
+  ;; https://robert.kra.hn/posts/rust-emacs-setup/
+  (require 'rust-mode)
+  (define-key rust-mode-map (kbd "<f7>") 'rust-compile)
+  (define-key rust-mode-map (kbd "<f8>") 'rust-run)
+
+  (require 'lsp-mode)
+  (add-hook 'rust-mode-hook #'lsp)
+  ;;(lsp-rust-analyzer-cargo-watch-command "clippy")
 #+END_SRC
 
 * Backups
