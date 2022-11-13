@@ -184,6 +184,14 @@ Highlite matching paranthesis
 (show-paren-mode 1)
 #+END_SRC
 
+** Language Server
+#+BEGIN_SRC emacs-lisp
+      (require 'lsp-mode)
+      (add-hook 'c-mode-hook 'lsp)
+      (add-hook 'c++-mode-hook 'lsp)
+      (add-hook 'rust-mode-hook #'lsp)
+#+END_SRC
+
 * Perforce Integration
 Perforce integration for Emacs
 
@@ -257,9 +265,6 @@ Perforce integration for Emacs
   (require 'rust-mode)
   (define-key rust-mode-map (kbd "<f7>") 'rust-compile)
   (define-key rust-mode-map (kbd "<f8>") 'rust-run)
-
-  (require 'lsp-mode)
-  (add-hook 'rust-mode-hook #'lsp)
   ;;(lsp-rust-analyzer-cargo-watch-command "clippy")
 #+END_SRC
 
