@@ -16,13 +16,15 @@
 
   ;; Rust
   (package-install 'rust-mode)
-  (package-install 'rustic)
 
-  ;; LSP
-  (package-install 'lsp-mode)
-  (package-install 'lsp-ui)
-  (package-install 'flycheck)
+  ;; EGLOT
+  (package-install 'eglot)
+  (package-install 'company)
+  (package-install 'posframe)
 
+  ;; Custom Packages
+  (add-to-list 'load-path "~/.emacs.d/elisp/")
+  (require 'flymake-posframe)
 #+END_SRC
 
 * Startup
@@ -151,19 +153,70 @@ Nicer buffer switching. This allows to cycle through open buffers in the echo li
 '(verilog-tab-to-comment nil)
 )
 #+END_SRC
-** C++ Indentation
+** C/C++ Mode
 #+BEGIN_SRC emacs-lisp
-(c-add-style "kristof"
-  '("stroustrup"
-    (c-basic-offset   . 2)
-    (c-offsets-alist  . ((inline-open         . 0)
-                         (block-open          . 0)
-                         (brace-list-open     . 0)
-                         (inextern-lang       . 0)
-                         (innamespace         . 0)
-                         (inlambda            . 0)
-                         (statement-case-open . +)))))
-(setq c-default-style "kristof")
+  (c-add-style "kristof"
+    '("stroustrup"
+      (c-basic-offset   . 2)
+      (c-offsets-alist  . ((inline-open         . 0)
+                           (block-open          . 0)
+                           (brace-list-open     . 0)
+                           (inextern-lang       . 0)
+                           (innamespace         . 0)
+                           (inlambda            . 0)
+                           (statement-case-open . +)))))
+  (setq c-default-style "kristof")
+
+  (require 'eglot)
+  (require 'company)
+  (require 'flymake-posframe)
+  (defun my-c-eglot ()
+    (eglot-ensure)
+    (company-mode)
+    (flymake-posframe-mode))
+  (add-hook 'c++-mode-hook 'my-c-eglot)
+  (add-hook 'c-mode-hook 'my-c-eglot)
+#+END_SRC
+
+** Rust Mode
+#+BEGIN_SRC emacs-lisp
+  ;; https://robert.kra.hn/posts/rust-emacs-setup/
+  (require 'rust-mode)
+  (define-key rust-mode-map (kbd "<f6>") 'rust-run-clippy)
+  (define-key rust-mode-map (kbd "<f7>") 'rust-compile)
+  (define-key rust-mode-map (kbd "<f8>") 'rust-run)
+
+  (require 'eglot)
+  (require 'company)
+  (require 'flymake-posframe)
+  (defun my-rust-eglot ()
+    (eglot-ensure)
+    (company-mode)
+    (flymake-posframe-mode))
+  (add-hook 'rust-mode-hook 'my-rust-eglot)
+#+END_SRC
+
+** Metal Mode
+#+BEGIN_SRC emacs-lisp
+(require 'cc-mode)
+
+;;;###autoload
+(define-derived-mode metal-mode c++-mode "Metal"
+  "Major mode provides syntax highlighting for Metal shader files."
+  (make-local-variable 'font-lock-defaults)
+  (setq metal-mode-font-lock-keywords (append c++-font-lock-keywords
+                                              c++-font-lock-keywords-1
+                                              c++-font-lock-keywords-2
+                                              c++-font-lock-keywords-3
+                                              '(("\\<\\(fragment\\|constant\\|kernel\\|vertex\\|device\\|Uniforms\\)\\>" . font-lock-keyword-face)
+                                                ("\\<\\(\\(packed_\\)?\\(bool\\|u?char\\|u?short\\|u?int\\|harf\\|float\\)[2-4]?\\|harf[2-4]x[2-4]\\|float[2-4]x[2-4]\\|atomic_u?int\\)\\>" . font-lock-type-face)
+                                                ("\\<\\(sampler\\|texture\\([1-3]d\\|cube\\)\\(_array\\|_ms\\)?\\|\\(depth\\(2d\\|cube\\)\\(_array\\|_ms\\)?\\)\\)\\>" . font-lock-type-face))))
+  (setq font-lock-defaults '(metal-mode-font-lock-keywords)))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.metal\\'" . metal-mode))
+
+(provide 'metal-mode)
 #+END_SRC
 
 ** Tab Behavior
@@ -184,15 +237,8 @@ Highlite matching paranthesis
 (show-paren-mode 1)
 #+END_SRC
 
-** Language Server
-#+BEGIN_SRC emacs-lisp
-      (require 'lsp-mode)
-      (add-hook 'c-mode-hook 'lsp)
-      (add-hook 'c++-mode-hook 'lsp)
-      (add-hook 'rust-mode-hook #'lsp)
-#+END_SRC
-
-* Perforce Integration
+* Source Control
+** Perforce Integration
 Perforce integration for Emacs
 
 #+BEGIN_SRC emacs-lisp
@@ -218,7 +264,7 @@ Perforce integration for Emacs
 | update     | C-x p g      | Get files from depot                                     |
 |------------+--------------+----------------------------------------------------------|
 
-* Git Integration
+** Git Integration
 #+BEGIN_SRC emacs-lisp
 (require 'magit)
 #+END_SRC
@@ -234,38 +280,6 @@ Perforce integration for Emacs
 * Dired Mode
 #+BEGIN_SRC emacs-lisp
 (put 'dired-find-alternate-file 'disabled nil)
-#+END_SRC
-
-* Metal Mode
-#+BEGIN_SRC emacs-lisp
-(require 'cc-mode)
-
-;;;###autoload
-(define-derived-mode metal-mode c++-mode "Metal"
-  "Major mode provides syntax highlighting for Metal shader files."
-  (make-local-variable 'font-lock-defaults)
-  (setq metal-mode-font-lock-keywords (append c++-font-lock-keywords
-                                              c++-font-lock-keywords-1
-                                              c++-font-lock-keywords-2
-                                              c++-font-lock-keywords-3
-                                              '(("\\<\\(fragment\\|constant\\|kernel\\|vertex\\|device\\|Uniforms\\)\\>" . font-lock-keyword-face)
-                                                ("\\<\\(\\(packed_\\)?\\(bool\\|u?char\\|u?short\\|u?int\\|harf\\|float\\)[2-4]?\\|harf[2-4]x[2-4]\\|float[2-4]x[2-4]\\|atomic_u?int\\)\\>" . font-lock-type-face)
-                                                ("\\<\\(sampler\\|texture\\([1-3]d\\|cube\\)\\(_array\\|_ms\\)?\\|\\(depth\\(2d\\|cube\\)\\(_array\\|_ms\\)?\\)\\)\\>" . font-lock-type-face))))
-  (setq font-lock-defaults '(metal-mode-font-lock-keywords)))
-
-;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.metal\\'" . metal-mode))
-
-(provide 'metal-mode)
-#+END_SRC
-
-* Rust Mode
-#+BEGIN_SRC emacs-lisp
-  ;; https://robert.kra.hn/posts/rust-emacs-setup/
-  (require 'rust-mode)
-  (define-key rust-mode-map (kbd "<f7>") 'rust-compile)
-  (define-key rust-mode-map (kbd "<f8>") 'rust-run)
-  ;;(lsp-rust-analyzer-cargo-watch-command "clippy")
 #+END_SRC
 
 * Backups
