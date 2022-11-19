@@ -66,15 +66,6 @@ Only the `foreground' is used in this face."
                      (frame-visible-p (buffer-local-value 'posframe--frame (get-buffer flymake-posframe-buffer))))
           (setq flymake-posframe-current-diag diag)
           (let ((msg (flymake-posframe-format diag)))
-;;          (let ((category (get (flymake-diagnostic-type diag) 'flymake-category)))
-;;            (let ((prop (propertize
-;;		         (pcase category
-;;                           ('flymake-error flymake-posframe-prefix)
-;;                           ('flymake-warning flymake-posframe-prefix)
-;;                           ('flymake-note flymake-posframe-prefix))
-;;                         'face 'warning)))
-;;              (let ((msg (concat prop
-;;			         (flymake--diag-text diag))))
             (posframe-show
              flymake-posframe-buffer
 	     :internal-border-width 3
