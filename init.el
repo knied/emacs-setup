@@ -13,7 +13,7 @@
  ;; If there is more than one, they won't work right.
  '(magit-log-section-arguments '("--graph" "--color" "--decorate" "-n256"))
  '(package-selected-packages
-   '(posframe company eglot rust-mode typescript-mode swift-mode verilog-mode evil magit p4 gruvbox-theme))
+   '(yasnippet posframe company eglot rust-mode typescript-mode swift-mode verilog-mode evil magit p4 gruvbox-theme))
  '(verilog-align-ifelse t)
  '(verilog-auto-delete-trailing-whitespace t)
  '(verilog-auto-inst-param-value t)

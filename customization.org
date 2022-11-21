@@ -21,6 +21,7 @@
   (package-install 'eglot)
   (package-install 'company)
   (package-install 'posframe)
+  (package-install 'yasnippet)
 
   ;; Custom Packages
   (add-to-list 'load-path "~/.emacs.d/elisp/")
@@ -42,20 +43,21 @@ This makes Emacs start with only the *scratch* buffer visible
 
 * Key Bindings
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<f7>") 'compile)
-(global-set-key (kbd "C-=") 'dired-create-directory)
+  (global-set-key (kbd "<f7>") 'compile)
+  (global-set-key (kbd "C-=") 'dired-create-directory)
 
-(global-set-key (kbd "C-x <up>") 'windmove-up)
-(global-set-key (kbd "C-x <down>") 'windmove-down)
-(global-set-key (kbd "C-x <left>") 'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
+  (global-set-key (kbd "C-x <up>") 'windmove-up)
+  (global-set-key (kbd "C-x <down>") 'windmove-down)
+  (global-set-key (kbd "C-x <left>") 'windmove-left)
+  (global-set-key (kbd "C-x <right>") 'windmove-right)
 
-(define-key global-map [C-home] 'beginning-of-buffer)
-(define-key global-map [C-end] 'end-of-buffer)
-(define-key global-map [home] 'beginning-of-line)
-(define-key global-map [end] 'end-of-line)
+  (define-key global-map [C-home] 'beginning-of-buffer)
+  (define-key global-map [C-end] 'end-of-buffer)
+  (define-key global-map [home] 'beginning-of-line)
+  (define-key global-map [end] 'end-of-line)
 
-(global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (global-set-key (kbd "C-'") 'eglot-code-actions)
 #+END_SRC
 
 * Visual Appearence
@@ -170,6 +172,8 @@ Nicer buffer switching. This allows to cycle through open buffers in the echo li
   (require 'eglot)
   (require 'company)
   (require 'flymake-posframe)
+  (require 'yasnippet)
+  (yas-global-mode 1)
   (defun my-c-eglot ()
     (eglot-ensure)
     (company-mode)

@@ -62,13 +62,14 @@ Only the `foreground' is used in this face."
   "Refresh the display at point."
   (when flymake-mode
     (if-let ((diag (get-char-property (point) 'flymake-diagnostic)))
-        (unless (and (eq diag flymake-posframe-current-diag)
-                     (frame-visible-p (buffer-local-value 'posframe--frame (get-buffer flymake-posframe-buffer))))
+        (progn
+          (flymake-posframe-hide)
           (setq flymake-posframe-current-diag diag)
           (let ((msg (flymake-posframe-format diag)))
             (posframe-show
              flymake-posframe-buffer
 	     :internal-border-width 3
+             :poshandler 'posframe-poshandler-point-bottom-left-corner-upward
 	     :left-fringe 1
 	     :right-fringe 1
 	     :foreground-color (face-foreground 'flymake-posframe-foreground-face nil t)
@@ -80,8 +81,7 @@ Only the `foreground' is used in this face."
 	      (redirect-frame-focus current-posframe-frame (frame-parent current-posframe-frame)))
             
 	    (dolist (hook flymake-posframe-hide-posframe-hooks)
-	      (add-hook hook #'flymake-posframe-hide nil t))))
-      (flymake-posframe-hide))))
+	      (add-hook hook #'flymake-posframe-hide nil t)))))))
 
 (define-minor-mode flymake-posframe-mode
   "Minor mode for displaying flymake diagnostics at point."
