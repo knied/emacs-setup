@@ -191,6 +191,8 @@ Nicer buffer switching. This allows to cycle through open buffers in the echo li
   (define-key rust-mode-map (kbd "<f8>") 'rust-run)
 
   (require 'eglot)
+  (add-to-list 'eglot-server-programs `(rust-mode . ("rust-analyzer"
+                                                     :initializationOptions (:checkOnSave (:command "clippy")))))
   (require 'company)
   (require 'flymake-posframe)
   (defun my-rust-eglot ()
